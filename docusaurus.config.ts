@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Jane Technologies',
+  tagline: 'Documentation & API Reference',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -73,23 +73,19 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'Jane Technologies',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Jane Technologies Logo',
         src: 'img/logo.svg',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
-        },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
+ { to: '/docs/getting-started', label: 'Docs', position: 'left' },
+    { to: '/docs/api-reference', label: 'API Reference', position: 'left' },
+    { to: '/docs/examples', label: 'Examples', position: 'left' },
+    {
+      href: 'https://github.com/gharvey135/jane-docs',
+      label: 'GitHub',
+      position: 'right',
         },
       ],
     },
