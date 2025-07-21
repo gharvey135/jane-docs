@@ -1,44 +1,31 @@
-import type {ReactNode} from 'react';
-import clsx from 'clsx';
+import React from 'react';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import Heading from '@theme/Heading';
 
-import styles from './index.module.css';
-
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+export default function Home(): JSX.Element {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
+    <main className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-20">
+      <h1 className="text-5xl font-bold mb-4">📘 JSONPlaceholder API Wrapper</h1>
+      <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-xl">
+        A lightweight TypeScript client for interacting with the JSONPlaceholder REST API.
+        Built for testing, prototyping, and technical interviews.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Link
+          className="bg-blue-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-blue-700"
+          to="/docs/getting-started"
+        >
+          View Docs
+        </Link>
+        <Link
+          className="bg-gray-100 dark:bg-gray-800 px-6 py-3 rounded-xl text-lg hover:bg-gray-200 dark:hover:bg-gray-700"
+          to="https://github.com/gharvey135/jane-docs"
+        >
+          GitHub Repo
+        </Link>
       </div>
-    </header>
+    </main>
   );
 }
 
-export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
-    </Layout>
-  );
-}
+
+
