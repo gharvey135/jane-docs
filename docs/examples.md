@@ -16,27 +16,42 @@ async function main() {
 
 const posts = await client.getPosts();
 console.log(posts);
-# API Usage Examples
+# Usage Examples
 
-Real-world usage of the JSONPlaceholder API Wrapper.
+Practical examples of how to use the `JsonPlaceholderClient`.
 
 ---
 
-## 🧑‍💻 Get All Users
+## 🧠 Basic Usage
 
-### Request
+### JavaScript
 
-```bash
-GET /users HTTP/1.1
-Host: jsonplaceholder.typicode.com
+```ts
+import { JsonPlaceholderClient } from './src';
+
 const client = new JsonPlaceholderClient();
+
+async function main() {
+  const users = await client.getUsers();
+  const posts = await client.getPosts();
+  const comments = await client.getComments();
+
+  console.log('Users:', users);
+  console.log('Posts:', posts);
+  console.log('Comments:', comments);
+}
+
+main();
+
 const users = await client.getUsers();
-console.log(users);
-curl https://jsonplaceholder.typicode.com/users
 const posts = await client.getPosts();
-console.log(posts);
-curl https://jsonplaceholder.typicode.com/posts
-const comments = await client.getComments();
-console.log(comments);
-curl https://jsonplaceholder.typicode.com/comments
+
+const postsByUser = users.map((user) => {
+  return {
+    ...user,
+    posts: posts.filter((post) => post.userId === user.id),
+  };
+});
+
+console.log(postsByUser);
 
