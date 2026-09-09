@@ -1,57 +1,94 @@
+---
+sidebar_position: 3
+---
+
 # Examples
 
-Here are usage examples for working with the JSONPlaceholder API Wrapper.
-
----
-
-## Get All Users
+Runnable snippets against `JSONPlaceholderAPI`. Each assumes:
 
 ```ts
-import { JsonPlaceholderClient } from './src';
+import { JSONPlaceholderAPI } from './src/index';
+```
 
-const client = new JsonPlaceholderClient();
-
-async function main() {
-  const users = await client.
-
-const posts = await client.getPosts();
-console.log(posts);
-# Usage Examples
-
-Practical examples of how to use the `JsonPlaceholderClient`.
-
----
-
-## 🧠 Basic Usage
-
-### JavaScript
+## Basic usage
 
 ```ts
-import { JsonPlaceholderClient } from './src';
+const api = new JSONPlaceholderAPI({ userId: 1 });
 
-const client = new JsonPlaceholderClient();
+const users = await api.getUsers();
+const posts = await api.getPosts(); // only user 1's posts
+const comments = await api.getComments(posts[0].id);
 
-async function main() {
-  const users = await client.getUsers();
-  const posts = await client.getPosts();
-  const comments = await client.getComments();
+console.log(users.length, posts.length, comments.length); // 10 10 5
+```
 
-  console.log('Users:', users);
-  console.log('Posts:', posts);
-  console.log('Comments:', comments);
+## Fetch without tracking
+
+Omit `userId` to send `X-User-Tracking: guest` and get every post back.
+
+```ts
+const api = new JSONPlaceholderAPI();
+const allPosts = await api.getPosts(); // 100 posts
+```
+
+## Join users to their posts
+
+The API has no embed parameter, so the join happens client-side. Two requests, one pass over the data.
+
+```ts
+const api = new JSONPlaceholderAPI();
+
+const [users, posts] = await Promise.all([api.getUsers(), api.getPosts()]);
+
+const postsByUser = users.map((user) => ({
+  ...user,
+  posts: posts.filter((post) => post.userId === user.id),
+}));
+
+console.log(postsByUser[0].posts.length); // 10
+```
+
+## Load comments for several posts in parallel
+
+```ts
+const api = new JSONPlaceholderAPI({ userId: 2 });
+const posts = await api.getPosts();
+
+const comments = await Promise.all(posts.map((p) => api.getComments(p.id)));
+const total = comments.reduce((n, list) => n + list.length, 0);
+
+console.log(total); // 50 (5 comments x 10 posts)
+```
+
+## Handling errors
+
+The client rethrows `AxiosError`, so status codes stay available.
+
+```ts
+import axios from 'axios';
+
+try {
+  await api.getComments(-1); // JSONPlaceholder returns [] here, but a real API might 404
+} catch (err) {
+  if (axios.isAxiosError(err)) {
+    console.error('HTTP', err.response?.status, err.message);
+  } else {
+    throw err;
+  }
 }
+```
 
-main();
+## One client per end user
 
-const users = await client.getUsers();
-const posts = await client.getPosts();
+Because tracking is set at construction time, create one instance per user rather than mutating a shared one.
 
-const postsByUser = users.map((user) => {
-  return {
-    ...user,
-    posts: posts.filter((post) => post.userId === user.id),
-  };
-});
+```ts
+const clients = new Map<number, JSONPlaceholderAPI>();
 
-console.log(postsByUser);
-
+function clientFor(userId: number) {
+  if (!clients.has(userId)) {
+    clients.set(userId, new JSONPlaceholderAPI({ userId }));
+  }
+  return clients.get(userId)!;
+}
+```

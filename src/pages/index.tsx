@@ -6,7 +6,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout title="JSONPlaceholder API Wrapper" description="TypeScript client for JSONPlaceholder">
       <main style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-        <h1>📘 JSONPlaceholder API Wrapper</h1>
+        <h1>JSONPlaceholder API Wrapper</h1>
         <p style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '1rem auto' }}>
           A lightweight TypeScript client for interacting with the JSONPlaceholder REST API.
           Built for testing, prototyping, and technical interviews.
@@ -45,7 +45,4 @@ export default function Home(): JSX.Element {
     </Layout>
   );
 }
-
-
-
 

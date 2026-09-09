@@ -1,31 +1,31 @@
-console.log("🔧 test.ts is running");
+// Smoke test against the live JSONPlaceholder API.
+// Run with: npx ts-node test.ts  (or npm test)
 
+import assert from 'node:assert/strict';
 import { JSONPlaceholderAPI } from './src/index';
 
 const run = async () => {
-  console.log("🔁 Starting run()...");
-
   const api = new JSONPlaceholderAPI({ userId: 1 });
 
-  try {
-    console.log("📡 Fetching users...");
-    const users = await api.getUsers();
-    console.log('\n📋 Users:', users);
+  const users = await api.getUsers();
+  assert.equal(users.length, 10, 'expected 10 users');
+  assert.equal(typeof users[0].email, 'string', 'user.email should be a string');
+  console.log(`getUsers: ${users.length} users`);
 
-    console.log("📡 Fetching posts...");
-    const posts = await api.getPosts();
-    console.log('\n📝 Posts for user 1:', posts);
+  const posts = await api.getPosts();
+  assert.equal(posts.length, 10, 'expected 10 posts for userId 1');
+  assert.ok(posts.every((p) => p.userId === 1), 'all posts should belong to userId 1');
+  console.log(`getPosts: ${posts.length} posts for user 1`);
 
-    if (posts.length > 0) {
-      console.log(`📡 Fetching comments for post ID: ${posts[0].id}`);
-      const comments = await api.getComments(posts[0].id);
-      console.log(`\n💬 Comments on post ${posts[0].id}:`, comments);
-    } else {
-      console.log('\n⚠️ No posts found for user.');
-    }
-  } catch (err) {
-    console.error('❌ Error occurred:', err);
-  }
+  const comments = await api.getComments(posts[0].id);
+  assert.equal(comments.length, 5, 'expected 5 comments on the first post');
+  assert.ok(comments.every((c) => c.postId === posts[0].id), 'comments should match postId');
+  console.log(`getComments: ${comments.length} comments on post ${posts[0].id}`);
+
+  console.log('All checks passed.');
 };
 
-run();
+run().catch((err) => {
+  console.error('Test failed:', err instanceof Error ? err.message : err);
+  process.exitCode = 1;
+});

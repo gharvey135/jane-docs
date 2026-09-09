@@ -1,5 +1,3 @@
-// src/index.ts
-
 import axios, { AxiosInstance } from 'axios';
 
 // Define the shape of the data returned from the API
@@ -37,8 +35,6 @@ export class JSONPlaceholderAPI {
   constructor(options?: JSONPlaceholderOptions) {
     this.userId = options?.userId;
 
-    console.log("📦 JSONPlaceholderAPI is being initialized...");
-
     // Create an axios client for requests
     this.client = axios.create({
       baseURL: 'https://jsonplaceholder.typicode.com',
@@ -63,7 +59,6 @@ export class JSONPlaceholderAPI {
 
   // Get comments for a specific post
   async getComments(postId: number): Promise<Comment[]> {
-    console.log("📨 Inside getComments()...");
     const res = await this.client.get('/comments', { params: { postId } });
     return res.data;
   }
