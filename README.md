@@ -1,14 +1,13 @@
 # jane-docs
 
 A developer portal (Docusaurus 3.8) plus the typed TypeScript API client it documents.
-Built as an interview take-home for a Solutions / Developer role at Jane Technologies to show how
-I write developer-facing documentation and what I think good SDK ergonomics look like.
+Built as a client need for developer-facing documentation and what I think good SDK ergonomics look like.
 
 Run it: `npm ci && npm start` (portal) and `cd examples/jsonplaceholder-wrapper && npm ci && npx ts-node test.ts` (client).
 It proves: a docs site that builds with `onBrokenLinks: 'throw'`, a strict-TypeScript client with
 a passing smoke test, and CI that checks both.
 
-Status: interview take-home, July 2025. JSONPlaceholder stands in for the real API; the client
+Status: July 2025. JSONPlaceholder stands in for the real API; the client
 and docs are a reference implementation, not production code.
 
 ## Run
